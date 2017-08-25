@@ -5,13 +5,17 @@
  * Author: Charles Eudy *********************************************
  * Date: 8/24/2017      *
  * Language: JAVA      *
- * Version: 0.96        *
+ * Version: 0.97        *
  * Thank you and Enjoy! *
  ************************
  */
+// 0.97 ADDED HANDLER CLASS to STATE CLASS
 package com.memecraft.states;
 
 import java.awt.Graphics;
+
+import com.memecraft.main.Game;
+import com.memecraft.main.Handler;
 
 public abstract class State {
 
@@ -26,6 +30,13 @@ public abstract class State {
 	}
 	
 	// CLASS
+	
+	protected Handler handler;
+	
+	public State(Handler handler) {
+		this.handler = handler;
+	}
+	
 	public abstract void tick();
 	
 	public abstract void render(Graphics g);

@@ -9,6 +9,7 @@
  * Thank you and Enjoy! *
  ************************
  */
+// 0.97 ADDED HANDLER CLASS to the Game Class
 package com.memecraft.main;
 
 import java.awt.Color;
@@ -47,6 +48,10 @@ public class Game implements Runnable{
 	
 	// CAMERA
 	private GameCamera gameCamera;
+	
+	// Handler
+	private Handler handler;
+	
 	public Game(String title, int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -55,14 +60,17 @@ public class Game implements Runnable{
 	}
 	
 	private void init() {
+		// Display
 		display = new Display(title, width, height);
 		display.getFrame().addKeyListener(keyManager);
 		Assets.init();
-		
+		// Camera
 		gameCamera = new GameCamera(this, 0, 0);
-		
-		gameState = new GameState(this);
-		menuState = new MenuState(this);
+		// Handler
+		handler = new Handler(this);
+		// States
+		gameState = new GameState(handler);
+		menuState = new MenuState(handler);
 		State.setState(gameState);
 	}
 	
