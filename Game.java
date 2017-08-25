@@ -18,15 +18,18 @@ import java.awt.image.BufferedImage;
 
 import com.memecraft.Display.Display;
 import com.memecraft.gfx.Assets;
+import com.memecraft.gfx.GameCamera;
 import com.memecraft.gfx.ImageLoader;
 import com.memecraft.gfx.SpriteSheet;
+import com.memecraft.input.KeyManager;
 import com.memecraft.states.State;
 import com.memecraft.states.GameState;
+import com.memecraft.states.MenuState;
 
 public class Game implements Runnable{
 
 	private Display display;
-	public int width, height;
+	private int width, height;
 	public String title;
 	
 	private boolean running = false;
@@ -37,23 +40,34 @@ public class Game implements Runnable{
 	
 	// STATES
 	private State gameState;
+	private State menuState;
 	
+	// INPUT
+	private KeyManager keyManager;
 	
+	// CAMERA
+	private GameCamera gameCamera;
 	public Game(String title, int width, int height) {
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		keyManager = new KeyManager();
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
+		display.getFrame().addKeyListener(keyManager);
 		Assets.init();
 		
-		gameState = new GameState();
+		gameCamera = new GameCamera(this, 0, 0);
+		
+		gameState = new GameState(this);
+		menuState = new MenuState(this);
 		State.setState(gameState);
 	}
 	
 	private void tick() {
+		keyManager.tick();
 		if(State.getState() != null)
 			State.getState().tick();
 	}
@@ -111,6 +125,22 @@ public class Game implements Runnable{
 			}
 		}
 		stop();
+	}
+	// Return the keyManager object so other classes can use them
+	public KeyManager getKeyManager() {
+		return keyManager;
+	}
+	
+	public GameCamera getGameCamera() {
+		return gameCamera;
+	}
+	// Get the width of the window
+	public int getWidth() {
+		return width;
+	}
+	// Get the height of the window
+	public int getHeight() {
+		return height;
 	}
 	
 	public synchronized void start() {
