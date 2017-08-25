@@ -13,26 +13,31 @@ package com.memecraft.states;
 
 import java.awt.Graphics;
 
+import com.memecraft.entities.creatures.Player;
 import com.memecraft.gfx.Assets;
+import com.memecraft.main.Game;
+import com.memecraft.tiles.Tile;
+import com.memecraft.worlds.World;
 
 public class GameState extends State{
 
+	private Player player;
+	private World world;
 
-	public GameState() {
-		
+	public GameState(Game game) {
+		super(game);
+		player = new Player(game, 100, 100);
+		world = new World(" ");
 	}
 	
 	public void tick() {
-		
-		
+		world.tick();
+		player.tick();
 	}
 
 
 	public void render(Graphics g) {
-		g.drawImage(Assets.dirt, 205, 205, null);
-		
+		world.render(g);
+		player.render(g);
 	}
-
-	
-	
 }
